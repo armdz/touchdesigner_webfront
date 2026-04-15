@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TD Interface Editor</title>
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/editor.css" />
+  <link rel="stylesheet" href="/css/components/slider.css" />
+  <link rel="stylesheet" href="/css/components/button.css" />
+  <link rel="stylesheet" href="/css/components/input.css" />
+</head>
+<body>
+  <header class="header">
+    <span class="header__title">Interface Editor</span>
+    <div class="header__actions">
+
+      <div class="status" id="wsStatus" style="display:none">
+        <div class="status__dot status__dot--connecting" id="statusDot"></div>
+        <span id="statusText">Connecting…</span>
+      </div>
+
+      <span class="save-status" id="saveStatus"></span>
+
+      <!-- Preview: play icon -->
+      <button class="btn btn--action" id="btnPreview" title="Preview">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+          <polygon points="5,3 19,12 5,21"/>
+        </svg>
+        Preview
+      </button>
+
+      <!-- Save: floppy disk icon -->
+      <button class="btn btn--primary btn--action" id="btnSave" title="Save to TouchDesigner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Save to TD
+      </button>
+
+    </div>
+  </header>
+
+  <div class="editor">
+    <aside class="editor__palette" id="palette"></aside>
+
+    <div class="editor__center">
+      <!-- Scene tabs (edit mode) -->
+      <div class="scene-bar" id="sceneBar"></div>
+
+      <div class="editor__workspace">
+        <div class="editor__canvas"  id="canvas"></div>
+        <div class="editor__preview" id="preview">
+          <!-- Scene nav in preview mode -->
+          <div class="scene-nav" id="previewSceneNav" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="editor__params" id="params"></aside>
+  </div>
+
+  <script type="module" src="/js/editor/main.js"></script>
+</body>
+</html>

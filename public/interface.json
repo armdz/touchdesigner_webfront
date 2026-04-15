@@ -1,0 +1,39 @@
+{
+  "scenes": [
+    {
+      "id": "scene_default",
+      "name": "Scene 1",
+      "controls": [
+        {
+          "type": "button",
+          "id": "sumar",
+          "label": "Sumar",
+          "value": 0,
+          "x": 20,
+          "y": 280
+        },
+        {
+          "type": "slider",
+          "id": "ampltiud",
+          "label": "Ampltiud",
+          "x": 20,
+          "y": 80,
+          "min": 0,
+          "max": 0.1,
+          "step": 0.0001,
+          "value": 0.05
+        },
+        {
+          "type": "input",
+          "id": "nombre",
+          "label": "Nombre",
+          "x": 20,
+          "y": 180,
+          "value": "",
+          "placeholder": "Type here\u2026",
+          "fieldType": "text"
+        }
+      ]
+    }
+  ]
+}

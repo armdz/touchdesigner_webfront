@@ -1,0 +1,21 @@
+.input-control .control__body {
+  display: flex;
+  align-items: center;
+}
+
+.input-control__field {
+  flex: 1;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 13px;
+  padding: 6px 10px;
+  outline: none;
+  width: 100%;
+  transition: border-color .15s;
+}
+
+.input-control__field:focus { border-color: var(--accent); }
+
+.input-control__field[type=number] { font-variant-numeric: tabular-nums; }

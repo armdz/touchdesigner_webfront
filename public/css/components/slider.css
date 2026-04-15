@@ -1,0 +1,76 @@
+.control {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-sizing: border-box;
+}
+
+/* ── Header row: label / id / value ───────────────────────── */
+.control__header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.control__label {
+  font-size: 13px;
+  flex: 1;
+}
+
+.control__id {
+  font-size: 10px;
+  font-family: monospace;
+  color: var(--text-dim);
+}
+
+.control__value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 4ch;
+  text-align: right;
+}
+
+/* ── Body row: min / range / max ──────────────────────────── */
+.control__body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control__min,
+.control__max {
+  font-size: 11px;
+  color: var(--text-dim);
+  min-width: 2.5ch;
+}
+.control__max { text-align: right; }
+
+/* ── Range input ──────────────────────────────────────────── */
+.slider-control__input {
+  -webkit-appearance: none;
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-3);
+  outline: none;
+  cursor: pointer;
+}
+
+.slider-control__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 50%, transparent);
+  cursor: grab;
+  transition: transform .1s;
+}
+
+.slider-control__input:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.25);
+}

@@ -1,0 +1,40 @@
+body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+/* Canvas — mirrors the editor grid exactly */
+.viewer-canvas {
+  flex: 1;
+  position: relative;
+  overflow: auto;
+  background-color: var(--bg);
+}
+
+/* Each control is absolutely positioned */
+.viewer-item {
+  position: absolute;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+/* Inner control fills the wrapper */
+.viewer-item .control {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.viewer-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 2;
+}
+
+.viewer-empty a { color: var(--accent); }
+
+/* IDs are editor-only — never show in viewer */
+.control__id { display: none; }
