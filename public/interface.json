@@ -1,5 +1,5 @@
 {
-  "name": "WFRONT TEST",
+  "name": "UNTITLED",
   "scenes": [
     {
       "id": "scene_default",
@@ -33,8 +33,8 @@
         },
         {
           "type": "toggle",
-          "id": "prueba",
-          "label": "Prueba",
+          "id": "toggle",
+          "label": "Toggle",
           "x": 120,
           "y": 380,
           "value": 0
@@ -59,8 +59,8 @@
         },
         {
           "type": "knob",
-          "id": "fuerza",
-          "label": "Fuerza",
+          "id": "knob",
+          "label": "Knob",
           "x": 20,
           "y": 380,
           "min": 0,
@@ -78,8 +78,8 @@
         },
         {
           "type": "slider",
-          "id": "amplitud",
-          "label": "Amplitud",
+          "id": "vertical",
+          "label": "Vertical",
           "x": 20,
           "y": 480,
           "min": 0,
@@ -87,6 +87,18 @@
           "step": 0.01,
           "value": 0,
           "orientation": "vertical"
+        },
+        {
+          "type": "slider",
+          "id": "horizontal",
+          "label": "Horizontal",
+          "x": 120,
+          "y": 480,
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0,
+          "orientation": "horizontal"
         }
       ]
     }
