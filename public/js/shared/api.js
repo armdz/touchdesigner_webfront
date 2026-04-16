@@ -12,6 +12,16 @@ export async function loadInterface() {
   }
 }
 
+export async function loadValues() {
+  try {
+    const res = await fetch('/values');
+    if (!res.ok) return {};
+    return await res.json();
+  } catch {
+    return {};
+  }
+}
+
 export async function saveInterface(data) {
   const res = await fetch('/save', {
     method: 'POST',

@@ -1,0 +1,66 @@
+.knob-control {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.knob-control__wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.knob-control .control__id {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 8px;
+  font-family: var(--font);
+  color: var(--text-dim);
+  opacity: .35;
+}
+
+/* Title — small, centered, top */
+.knob-control__label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-align: center;
+  width: 100%;
+  line-height: 1.1;
+}
+
+/* SVG — fills the middle, max interactive area */
+.knob-control__svg {
+  width: 46px;
+  height: 46px;
+  cursor: ns-resize;
+  user-select: none;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+.knob-control__track  { stroke: var(--bg-3); }
+.knob-control__fill   {
+  stroke: var(--accent);
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 55%, transparent));
+}
+.knob-control__pointer { stroke: var(--text); }
+
+/* Value — small, centered, accent, bottom */
+.knob-control__val {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .06em;
+  text-align: center;
+}

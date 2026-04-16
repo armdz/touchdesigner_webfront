@@ -63,6 +63,7 @@ btnPreview.addEventListener('click', () => {
   isPreview = !isPreview;
   editorEl.classList.toggle('preview', isPreview);
   wsStatus.style.display = isPreview ? 'flex' : 'none';
+  btnPreview.querySelector('.btn__text').textContent = isPreview ? 'Editor' : 'Preview';
 
   if (isPreview) {
     const scenes = sceneMgr.getScenes();
@@ -73,9 +74,25 @@ btnPreview.addEventListener('click', () => {
   }
 });
 
+// ── Project name ──────────────────────────────────────────────────────────
+
+const projectNameEl = document.getElementById('projectName');
+
+projectNameEl.addEventListener('input', () => {
+  document.title = (projectNameEl.value.trim() || 'Untitled') + ' — WebFront Editor';
+});
+
+// Select all text on focus for quick rename
+projectNameEl.addEventListener('focus', () => projectNameEl.select());
+
 // ── Load existing interface ───────────────────────────────────────────────
 
-loadInterface().then(iface => sceneMgr.load(iface));
+loadInterface().then(iface => {
+  const name = iface.name?.trim() || 'Untitled Project';
+  projectNameEl.value = name;
+  document.title = name + ' — WebFront Editor';
+  sceneMgr.load(iface);
+});
 
 // ── Save ──────────────────────────────────────────────────────────────────
 
@@ -87,7 +104,8 @@ btnSave.addEventListener('click', async () => {
   saveStatus.textContent = '';
 
   try {
-    await saveInterface(sceneMgr.export());
+    const name = projectNameEl.value.trim() || 'Untitled Project';
+    await saveInterface({ name, ...sceneMgr.export() });
     saveStatus.textContent = '✓';
     saveStatus.className   = 'save-status save-status--ok';
   } catch (e) {

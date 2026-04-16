@@ -1,0 +1,29 @@
+.label-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.label-control__text {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--text);
+  text-align: center;
+  line-height: 1;
+}
+
+/* ID shown only in editor (small, far right) */
+.label-control .control__id {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 9px;
+  font-family: monospace;
+  color: var(--text-dim);
+  opacity: .4;
+}

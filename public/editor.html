@@ -9,10 +9,22 @@
   <link rel="stylesheet" href="/css/components/slider.css" />
   <link rel="stylesheet" href="/css/components/button.css" />
   <link rel="stylesheet" href="/css/components/input.css" />
+  <link rel="stylesheet" href="/css/components/toggle.css" />
+  <link rel="stylesheet" href="/css/components/color.css" />
+  <link rel="stylesheet" href="/css/components/xypad.css" />
+  <link rel="stylesheet" href="/css/components/knob.css" />
+  <link rel="stylesheet" href="/css/components/vslider.css" />
+  <link rel="stylesheet" href="/css/components/label.css" />
 </head>
 <body>
   <header class="header">
-    <span class="header__title">Interface Editor</span>
+    <div class="header__left">
+      <span class="header__title">WebFront Editor</span>
+      <span class="header__sep">|</span>
+      <input class="header__project-name" id="projectName"
+             value="Untitled Project" spellcheck="false"
+             title="Click to rename project" />
+    </div>
     <div class="header__actions">
 
       <div class="status" id="wsStatus" style="display:none">
@@ -27,7 +39,7 @@
         <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
           <polygon points="5,3 19,12 5,21"/>
         </svg>
-        Preview
+        <span class="btn__text">Preview</span>
       </button>
 
       <!-- Save: floppy disk icon -->

@@ -1,0 +1,44 @@
+.xypad-control {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.xypad-control__pad {
+  flex: 1;
+  position: relative;
+  margin-top: 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: crosshair;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.xypad-control__line {
+  position: absolute;
+  background: color-mix(in srgb, var(--border) 80%, transparent);
+  pointer-events: none;
+}
+.xypad-control__line--h {
+  left: 0; right: 0;
+  height: 1px;
+  transform: translateY(-50%);
+}
+.xypad-control__line--v {
+  top: 0; bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.xypad-control__thumb {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 60%, transparent);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}

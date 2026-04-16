@@ -1,0 +1,59 @@
+.toggle-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.toggle-control .control__header {
+  width: 100%;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.toggle-control .control__label {
+  flex: unset;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: .08em;
+}
+
+.toggle-control .control__body {
+  justify-content: center;
+}
+
+.toggle-control__switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background .2s, border-color .2s;
+}
+.toggle-control__switch--on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.toggle-control__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  pointer-events: none;
+  transition: transform .2s, background .2s;
+}
+.toggle-control__switch--on .toggle-control__thumb {
+  transform: translateX(18px);
+  background: #000;
+}

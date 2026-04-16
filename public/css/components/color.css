@@ -1,0 +1,103 @@
+.color-control {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.color-control .control__header {
+  margin-bottom: 5px;
+  flex-shrink: 0;
+}
+
+.color-control__body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 0;
+}
+
+/* Clickable color square */
+.color-control__swatch {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.color-control__swatch:hover { border-color: var(--accent); }
+
+.color-control__native {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Hex + alpha stacked vertically beside swatch */
+.color-control__inputs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.color-control__hex {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 11px;
+  font-family: var(--font);
+  padding: 4px 6px;
+  width: 100%;
+  outline: none;
+  transition: border-color .15s;
+  letter-spacing: .05em;
+}
+.color-control__hex:focus { border-color: var(--accent); }
+
+.color-control__alpha-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.color-control__alpha-label {
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.color-control__alpha-range {
+  -webkit-appearance: none;
+  flex: 1;
+  height: 3px;
+  background: var(--bg-3);
+  outline: none;
+  cursor: pointer;
+}
+.color-control__alpha-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--text);
+  cursor: grab;
+}
+.color-control__alpha-range:active::-webkit-slider-thumb { cursor: grabbing; }
+
+.color-control__alpha-val {
+  font-size: 10px;
+  color: var(--accent);
+  min-width: 3ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

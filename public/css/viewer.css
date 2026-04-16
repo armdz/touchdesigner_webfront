@@ -1,4 +1,11 @@
-body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
 
 /* Canvas — mirrors the editor grid exactly */
 .viewer-canvas {

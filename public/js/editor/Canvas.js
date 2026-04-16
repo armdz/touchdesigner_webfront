@@ -47,6 +47,15 @@ export class Canvas {
     }
 
     this._selected.config[key] = value;
+
+    // Resize canvas-item if size depends on config (e.g. slider orientation)
+    const entry = getEntry(this._selected.config.type);
+    if (entry?.sizeOf) {
+      const { w, h } = entry.sizeOf(this._selected.config);
+      this._selected.el.style.width  = `${w}px`;
+      this._selected.el.style.height = `${h}px`;
+    }
+
     this._refreshPreview(this._selected);
     this.onChange?.(this._export());
   }
@@ -85,9 +94,11 @@ export class Canvas {
       const entry = getEntry(type);
       if (!entry) return;
 
-      const rect = this._el.getBoundingClientRect();
-      const x = Math.max(0, snap(e.clientX - rect.left - entry.size.w / 2 + this._el.scrollLeft, GRID));
-      const y = Math.max(0, snap(e.clientY - rect.top  - entry.size.h / 2 + this._el.scrollTop,  GRID));
+      const rect         = this._el.getBoundingClientRect();
+      const defaultConfig = { type, ...entry.defaults };
+      const { w, h }     = entry.sizeOf?.(defaultConfig) ?? entry.size;
+      const x = Math.max(0, snap(e.clientX - rect.left - w / 2 + this._el.scrollLeft, GRID));
+      const y = Math.max(0, snap(e.clientY - rect.top  - h / 2 + this._el.scrollTop,  GRID));
       this._addItem(type, x, y);
     });
   }
@@ -112,9 +123,13 @@ export class Canvas {
     this.onChange?.(this._export());
   }
 
+  _sizeOf(config) {
+    const entry = getEntry(config.type);
+    return entry?.sizeOf?.(config) ?? entry?.size ?? { w: 140, h: 80 };
+  }
+
   _renderItem(item) {
-    const entry   = getEntry(item.config.type);
-    const { w, h } = entry.size;
+    const { w, h } = this._sizeOf(item.config);
 
     const el = document.createElement('div');
     el.className = 'canvas-item';

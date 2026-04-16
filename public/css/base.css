@@ -11,8 +11,8 @@
   --ok:       #00ff88;
   --warn:     #ffaa00;
   --error:    #ff4444;
-  --radius:   6px;
-  --font:     'Segoe UI', system-ui, sans-serif;
+  --radius:   2px;
+  --font:     'Consolas', 'Menlo', 'Cascadia Code', 'SF Mono', monospace;
 }
 
 body {

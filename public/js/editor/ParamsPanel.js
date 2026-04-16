@@ -71,9 +71,15 @@ export class ParamsPanel {
         for (const opt of field.options ?? []) {
           const o = document.createElement('option');
           o.value = opt; o.textContent = opt;
-          if (opt === val) o.selected = true;
+          if (String(opt) === String(val)) o.selected = true;
           inputEl.appendChild(o);
         }
+      } else if (field.inputType === 'checkbox') {
+        inputEl = document.createElement('input');
+        inputEl.className = 'form__checkbox';
+        inputEl.type    = 'checkbox';
+        inputEl.checked = !!val;
+        row.classList.add('form__row--checkbox');
       } else {
         inputEl = document.createElement('input');
         inputEl.className = `form__input${isReadonly ? ' form__input--readonly' : ''}`;
@@ -86,8 +92,11 @@ export class ParamsPanel {
 
       if (!isReadonly) {
         inputEl.addEventListener('input', () => {
-          let v = inputEl.value;
-          if (field.inputType === 'number') v = parseFloat(v);
+          let v;
+          if (field.inputType === 'checkbox') v = inputEl.checked;
+          else if (field.inputType === 'number') v = parseFloat(inputEl.value);
+          else v = inputEl.value;
+
           this.onChange?.(field.key, v);
 
           // Auto-derive ID from label

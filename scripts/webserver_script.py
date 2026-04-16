@@ -54,10 +54,24 @@ def _get_controls(iface: dict, scene_id: str = None) -> list:
         return scene.get('controls', [])
     return iface.get('controls', [])
 
+def _hex_to_rgb(hex_str: str):
+    """Convert #rrggbb to (r, g, b) floats in 0-1 range."""
+    h = hex_str.lstrip('#')
+    if len(h) == 6:
+        return (int(h[0:2], 16) / 255.0,
+                int(h[2:4], 16) / 255.0,
+                int(h[4:6], 16) / 255.0)
+    return 0.0, 0.0, 0.0
+
 def _init_table_from_json(dat, scene_id: str = None) -> None:
     """
     Populate dat table from interface.json for the given scene.
     Called on server start, after /save, and on scene switch.
+
+    Multi-channel controls use channel suffixes:
+      xypad  → {id}_x, {id}_y
+      color  → {id}_r, {id}_g, {id}_b, {id}_a
+    Label controls are decorative and produce no rows.
     """
     dat.clear()
     dat.appendRow(['id', 'value'])
@@ -65,8 +79,34 @@ def _init_table_from_json(dat, scene_id: str = None) -> None:
         with open(_interface_path(), 'r', encoding='utf-8') as f:
             iface = json.load(f)
         for ctrl in _get_controls(iface, scene_id):
-            ctrl_id = ctrl.get('id', '')
-            default  = ctrl.get('value', 0)
+            ctrl_id   = ctrl.get('id', '')
+            ctrl_type = ctrl.get('type', '')
+
+            # Labels are decorative — no row in TD
+            if ctrl_type == 'label':
+                continue
+
+            # XY Pad → {id}_x, {id}_y
+            if ctrl_type == 'xypad':
+                parts = str(ctrl.get('value', '0.5 0.5')).split()
+                x = float(parts[0]) if len(parts) > 0 else 0.5
+                y = float(parts[1]) if len(parts) > 1 else 0.5
+                _set_row(dat, ctrl_id + '_x', _control_values.get(ctrl_id + '_x', x))
+                _set_row(dat, ctrl_id + '_y', _control_values.get(ctrl_id + '_y', y))
+                continue
+
+            # Color → {id}_r, {id}_g, {id}_b, {id}_a
+            if ctrl_type == 'color':
+                r, g, b = _hex_to_rgb(ctrl.get('value', '#000000'))
+                alpha   = float(ctrl.get('alpha', 1.0))
+                _set_row(dat, ctrl_id + '_r', _control_values.get(ctrl_id + '_r', r))
+                _set_row(dat, ctrl_id + '_g', _control_values.get(ctrl_id + '_g', g))
+                _set_row(dat, ctrl_id + '_b', _control_values.get(ctrl_id + '_b', b))
+                _set_row(dat, ctrl_id + '_a', _control_values.get(ctrl_id + '_a', alpha))
+                continue
+
+            # All other controls — single value row
+            default = ctrl.get('value', 0)
             dat.appendRow([ctrl_id, _control_values.get(ctrl_id, default)])
     except Exception as e:
         print('[webserver] _init_table_from_json error:', e)
@@ -110,6 +150,14 @@ def onHTTPRequest(dat, request: Dict[str, Any],
                   response: Dict[str, Any]) -> Dict[str, Any]:
     uri    = request.get('uri', '/')
     method = request.get('method', 'GET')
+
+    # GET /values  →  return current live control values from TD
+    if method == 'GET' and uri == '/values':
+        response['statusCode']   = 200
+        response['statusReason'] = 'OK'
+        response['content-type'] = 'application/json'
+        response['data']         = json.dumps(_control_values)
+        return response
 
     # POST /save  →  write interface.json and refresh table
     if method == 'POST' and uri == '/save':

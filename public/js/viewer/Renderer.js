@@ -1,9 +1,5 @@
 import { createControl, getEntry } from '../components/registry.js';
 
-/**
- * Renderer — places controls on a canvas using the same x/y/size as the editor.
- * The viewer mirrors the editor layout exactly.
- */
 export class Renderer {
   constructor(container, ws) {
     this._container = container;
@@ -33,13 +29,15 @@ export class Renderer {
         const ctrl = createControl(config);
         ctrl.onChange(({ id, value }) => this._ws.send({ id, value }));
 
+        const size = entry.sizeOf?.(config) ?? entry.size;
+
         const wrapper = document.createElement('div');
         wrapper.className = 'viewer-item';
         wrapper.style.cssText = [
           `left:${config.x ?? 0}px`,
           `top:${config.y ?? 0}px`,
-          `width:${entry.size.w}px`,
-          `height:${entry.size.h}px`,
+          `width:${size.w}px`,
+          `height:${size.h}px`,
         ].join(';');
 
         wrapper.appendChild(ctrl.render());
@@ -52,6 +50,17 @@ export class Renderer {
   }
 
   setValue(id, value) {
-    this._controls.get(id)?.setValue(value);
+    // Direct match
+    const ctrl = this._controls.get(id);
+    if (ctrl) { ctrl.setValue(value); return; }
+
+    // Channel routing: "base_id_channel" → control.setChannelValue(channel, value)
+    // e.g. "color_1_r" → control "color_1", channel "r"
+    const sep = id.lastIndexOf('_');
+    if (sep > 0) {
+      const base    = id.slice(0, sep);
+      const channel = id.slice(sep + 1);
+      this._controls.get(base)?.setChannelValue?.(channel, value);
+    }
   }
 }

@@ -1,17 +1,46 @@
-import { SliderControl } from './SliderControl.js';
-import { ButtonControl } from './ButtonControl.js';
-import { InputControl }  from './InputControl.js';
+import { SliderControl  } from './SliderControl.js';
+import { ButtonControl  } from './ButtonControl.js';
+import { InputControl   } from './InputControl.js';
+import { ToggleControl  } from './ToggleControl.js';
+import { ColorControl   } from './ColorControl.js';
+import { XYPadControl   } from './XYPadControl.js';
+import { KnobControl    } from './KnobControl.js';
+import { LabelControl   } from './LabelControl.js';
+
+// ── Block grid system ─────────────────────────────────────────────────────
+// Cell:  140 × 80 px   (base unit)
+// Gap:    20 px         (visual space between components)
+//
+// size(cols, rows) = cols*CELL_W + (cols-1)*GAP  ×  rows*CELL_H + (rows-1)*GAP
+//
+//   1×1 → 140 × 80    button
+//   2×1 → 300 × 80    slider, input   (2×140 + 1×20 = 300)
+//   1×2 → 140 × 180
+//   2×2 → 300 × 180
+//
+// Square cells: 80×80 (1 row-height unit) — used for knob and toggle
+// ─────────────────────────────────────────────────────────────────────────
+const CELL = { w: 140, h: 80 };
+const GAP  = 20;
+const sz   = (cols, rows) => ({
+  w: cols * CELL.w + (cols - 1) * GAP,
+  h: rows * CELL.h + (rows - 1) * GAP,
+});
+const SQ   = { w: 80, h: 80 };   // square cell for knob/toggle
 
 const REGISTRY = {
 
   slider: {
     Class:    SliderControl,
     label:    'Slider',
-    size:     { w: 280, h: 80 },
-    defaults: { min: 0, max: 1, step: 0.01, value: 0 },
+    size:     sz(2, 1),                    // default (horizontal) 300 × 80
+    sizeOf:   (cfg) => cfg.orientation === 'vertical' ? { w: SQ.w, h: sz(1, 2).h } : sz(2, 1),
+    defaults: { min: 0, max: 1, step: 0.01, value: 0, orientation: 'horizontal' },
     schema: [
-      { key: 'id',    label: 'ID',      inputType: 'text',   readonly: true },
-      { key: 'label', label: 'Label',   inputType: 'text',   required: true },
+      { key: 'id',          label: 'ID',          inputType: 'text',   readonly: true },
+      { key: 'label',       label: 'Label',        inputType: 'text',   required: true },
+      { key: 'orientation', label: 'Orientation',  inputType: 'select',
+        options: ['horizontal', 'vertical'], default: 'horizontal' },
       { key: 'min',   label: 'Min',     inputType: 'number', default: 0 },
       { key: 'max',   label: 'Max',     inputType: 'number', default: 1 },
       { key: 'step',  label: 'Step',    inputType: 'number', default: 0.01 },
@@ -22,7 +51,7 @@ const REGISTRY = {
   button: {
     Class:    ButtonControl,
     label:    'Button',
-    size:     { w: 140, h: 60 },
+    size:     sz(1, 1),                    // 140 × 80
     defaults: { value: 0 },
     schema: [
       { key: 'id',    label: 'ID',    inputType: 'text', readonly: true },
@@ -34,7 +63,7 @@ const REGISTRY = {
   input: {
     Class:    InputControl,
     label:    'Input Field',
-    size:     { w: 220, h: 80 },
+    size:     sz(2, 1),                    // 300 × 80
     defaults: { value: '', placeholder: 'Type here…', fieldType: 'text' },
     schema: [
       { key: 'id',          label: 'ID',          inputType: 'text',   readonly: true },
@@ -45,8 +74,66 @@ const REGISTRY = {
     ],
   },
 
-  // ── Add future types here ─────────────────────────────────────────────
-  // toggle: { Class: ToggleControl, label: 'Toggle', size: {w:140,h:60}, ... },
+  toggle: {
+    Class:    ToggleControl,
+    label:    'Toggle',
+    size:     SQ,                          // 80 × 80
+    defaults: { value: 0 },
+    schema: [
+      { key: 'id',    label: 'ID',      inputType: 'text',   readonly: true },
+      { key: 'label', label: 'Label',   inputType: 'text',   required: true },
+      { key: 'value', label: 'Default', inputType: 'select', options: ['0', '1'], default: '0' },
+    ],
+  },
+
+  color: {
+    Class:    ColorControl,
+    label:    'Color',
+    size:     sz(2, 1),                    // 300 × 80
+    defaults: { value: '#00d4ff', alpha: 1 },
+    schema: [
+      { key: 'id',    label: 'ID',    inputType: 'text', readonly: true },
+      { key: 'label', label: 'Label', inputType: 'text', required: true },
+      { key: 'value', label: 'Color', inputType: 'text', default: '#00d4ff' },
+    ],
+  },
+
+  xypad: {
+    Class:    XYPadControl,
+    label:    'XY Pad',
+    size:     sz(2, 2),                    // 300 × 180
+    defaults: { value: '0.50 0.50' },
+    schema: [
+      { key: 'id',    label: 'ID',    inputType: 'text', readonly: true },
+      { key: 'label', label: 'Label', inputType: 'text', required: true },
+    ],
+  },
+
+  knob: {
+    Class:    KnobControl,
+    label:    'Knob',
+    size:     SQ,                          // 80 × 80
+    defaults: { min: 0, max: 1, step: 0.01, value: 0 },
+    schema: [
+      { key: 'id',    label: 'ID',      inputType: 'text',   readonly: true },
+      { key: 'label', label: 'Label',   inputType: 'text',   required: true },
+      { key: 'min',   label: 'Min',     inputType: 'number', default: 0 },
+      { key: 'max',   label: 'Max',     inputType: 'number', default: 1 },
+      { key: 'step',  label: 'Step',    inputType: 'number', default: 0.01 },
+      { key: 'value', label: 'Default', inputType: 'number', default: 0 },
+    ],
+  },
+
+  label: {
+    Class:    LabelControl,
+    label:    'Label',
+    size:     { w: 300, h: 40 },          // compact: half-height label strip
+    defaults: { value: 0 },
+    schema: [
+      { key: 'id',    label: 'ID',   inputType: 'text', readonly: true },
+      { key: 'label', label: 'Text', inputType: 'text', required: true },
+    ],
+  },
 };
 
 export function getRegistry()       { return REGISTRY; }
