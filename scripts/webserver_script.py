@@ -105,6 +105,16 @@ def _init_table_from_json(dat, scene_id: str = None) -> None:
                 _set_row(dat, ctrl_id + '_a', _control_values.get(ctrl_id + '_a', alpha))
                 continue
 
+            # Pallet → {id}_r, {id}_g, {id}_b (first color as default)
+            if ctrl_type == 'pallet':
+                colors = ctrl.get('colors', ['#FF0000'])
+                first  = colors[0] if colors else '#FF0000'
+                r, g, b = _hex_to_rgb(first)
+                _set_row(dat, ctrl_id + '_r', _control_values.get(ctrl_id + '_r', r))
+                _set_row(dat, ctrl_id + '_g', _control_values.get(ctrl_id + '_g', g))
+                _set_row(dat, ctrl_id + '_b', _control_values.get(ctrl_id + '_b', b))
+                continue
+
             # All other controls — single value row
             default = ctrl.get('value', 0)
             dat.appendRow([ctrl_id, _control_values.get(ctrl_id, default)])
@@ -131,6 +141,9 @@ def _serve_static(response: Dict[str, Any], uri: str) -> Dict[str, Any]:
             response['statusCode']    = 200
             response['statusReason']  = 'OK'
             response['content-type']  = _mime(os.path.splitext(path)[1])
+            response['cache-control'] = 'no-cache, no-store, must-revalidate'
+            response['pragma']        = 'no-cache'
+            response['expires']       = '0'
             response['data']          = f.read()
     except FileNotFoundError:
         response['statusCode']   = 404

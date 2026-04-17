@@ -1,68 +1,65 @@
 {
-  "name": "UNTITLED",
+  "name": "Proyecto",
   "scenes": [
     {
       "id": "scene_default",
       "name": "Scene 1",
       "controls": [
         {
-          "type": "button",
-          "id": "sumar",
-          "label": "Sumar",
-          "value": 0,
-          "x": 20,
-          "y": 280
-        },
-        {
-          "type": "input",
-          "id": "nombre",
-          "label": "Nombre",
-          "x": 20,
-          "y": 180,
-          "value": "",
-          "placeholder": "Type here\u2026",
-          "fieldType": "text"
-        },
-        {
-          "type": "button",
-          "id": "button",
-          "label": "Button",
+          "type": "pallet",
+          "id": "palette",
+          "label": "Palette",
           "x": 180,
-          "y": 280,
-          "value": 0
-        },
-        {
-          "type": "toggle",
-          "id": "toggle",
-          "label": "Toggle",
-          "x": 120,
-          "y": 380,
-          "value": 0
+          "y": 120,
+          "colors": [
+            "#ff0000",
+            "#e0f1e4",
+            "#962999",
+            "#22c004",
+            "#e52cb7"
+          ]
         },
         {
           "type": "color",
           "id": "color",
           "label": "Color",
           "x": 20,
-          "y": 80,
+          "y": 20,
           "value": "#00d4ff",
-          "alpha": 1,
-          "tdFormat": true
+          "alpha": 1
+        },
+        {
+          "type": "button",
+          "id": "button",
+          "label": "Button",
+          "x": 20,
+          "y": 120,
+          "value": 0
+        },
+        {
+          "type": "pallet",
+          "id": "palette_1",
+          "label": "Palette",
+          "x": 200,
+          "y": 320,
+          "colors": [
+            "#FF0000"
+          ]
         },
         {
           "type": "xypad",
-          "id": "pad",
-          "label": "PAD",
-          "x": 20,
-          "y": 680,
+          "id": "xy_pad",
+          "label": "XY Pad",
+          "x": 200,
+          "y": 380,
           "value": "0.50 0.50"
         },
         {
           "type": "knob",
           "id": "knob",
           "label": "Knob",
-          "x": 20,
-          "y": 380,
+          "x": 380,
+          "y": 200,
           "min": 0,
           "max": 1,
           "step": 0.01,
@@ -71,36 +68,39 @@
         {
           "type": "label",
           "id": "label",
-          "label": "LABEL",
-          "x": 20,
-          "y": 20,
+          "label": "Label",
+          "x": 60,
+          "y": 760,
           "value": 0
         },
         {
           "type": "slider",
-          "id": "vertical",
-          "label": "Vertical",
-          "x": 20,
-          "y": 480,
+          "id": "slider",
+          "label": "Slider",
+          "x": 60,
+          "y": 220,
           "min": 0,
           "max": 1,
           "step": 0.01,
           "value": 0,
           "orientation": "vertical"
-        },
-        {
-          "type": "slider",
-          "id": "horizontal",
-          "label": "Horizontal",
-          "x": 120,
-          "y": 480,
-          "min": 0,
-          "max": 1,
-          "step": 0.01,
-          "value": 0,
-          "orientation": "horizontal"
         }
       ]
+    },
+    {
+      "id": "scene_q9sbi8",
+      "name": "Scene 2",
+      "controls": []
+    },
+    {
+      "id": "scene_bmd613",
+      "name": "Scene 3",
+      "controls": []
+    },
+    {
+      "id": "scene_ype4up",
+      "name": "Scene 4",
+      "controls": []
     }
   ]
 }

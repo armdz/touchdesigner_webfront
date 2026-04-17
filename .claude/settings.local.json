@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(py|js\\)$\")",
+      "Bash(node -c public/js/editor/ControlForm.js)"
+    ]
+  }
+}

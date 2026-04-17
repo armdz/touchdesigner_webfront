@@ -3,6 +3,7 @@ import { ButtonControl  } from './ButtonControl.js';
 import { InputControl   } from './InputControl.js';
 import { ToggleControl  } from './ToggleControl.js';
 import { ColorControl   } from './ColorControl.js';
+import { ColorPalletControl } from './ColorPalletControl.js';
 import { XYPadControl   } from './XYPadControl.js';
 import { KnobControl    } from './KnobControl.js';
 import { LabelControl   } from './LabelControl.js';
@@ -37,7 +38,7 @@ const REGISTRY = {
     sizeOf:   (cfg) => cfg.orientation === 'vertical' ? { w: SQ.w, h: sz(1, 2).h } : sz(2, 1),
     defaults: { min: 0, max: 1, step: 0.01, value: 0, orientation: 'horizontal' },
     schema: [
-      { key: 'id',          label: 'ID',          inputType: 'text',   readonly: true },
+      { key: 'id',          label: 'ID',          inputType: 'text' },
       { key: 'label',       label: 'Label',        inputType: 'text',   required: true },
       { key: 'orientation', label: 'Orientation',  inputType: 'select',
         options: ['horizontal', 'vertical'], default: 'horizontal' },
@@ -51,12 +52,13 @@ const REGISTRY = {
   button: {
     Class:    ButtonControl,
     label:    'Button',
-    size:     sz(1, 1),                    // 140 × 80
+    size:     { w: 140, h: 40 },           // 140 × 40
     defaults: { value: 0 },
     schema: [
-      { key: 'id',    label: 'ID',    inputType: 'text', readonly: true },
-      { key: 'label', label: 'Label', inputType: 'text', required: true },
-      { key: 'text',  label: 'Text',  inputType: 'text', default: 'Press' },
+      { key: 'id',       label: 'ID',       inputType: 'text' },
+      { key: 'label',    label: 'Label',    inputType: 'text',   required: true },
+      { key: 'text',     label: 'Text',     inputType: 'text',   default: 'Press' },
+      { key: 'isToggle', label: 'Behavior', inputType: 'select', options: ['Momentary', 'Toggle'], default: 'Momentary' },
     ],
   },
 
@@ -64,13 +66,14 @@ const REGISTRY = {
     Class:    InputControl,
     label:    'Input Field',
     size:     sz(2, 1),                    // 300 × 80
-    defaults: { value: '', placeholder: 'Type here…', fieldType: 'text' },
+    defaults: { value: '', placeholder: 'Type here…', fieldType: 'text', defaultValue: '' },
     schema: [
-      { key: 'id',          label: 'ID',          inputType: 'text',   readonly: true },
-      { key: 'label',       label: 'Label',        inputType: 'text',   required: true },
-      { key: 'placeholder', label: 'Placeholder',  inputType: 'text',   default: 'Type here…' },
-      { key: 'fieldType',   label: 'Field Type',   inputType: 'select',
+      { key: 'id',           label: 'ID',          inputType: 'text' },
+      { key: 'label',        label: 'Label',       inputType: 'text',   required: true },
+      { key: 'placeholder',  label: 'Placeholder', inputType: 'text',   default: 'Type here…' },
+      { key: 'fieldType',    label: 'Field Type',  inputType: 'select',
         options: ['text', 'number'], default: 'text' },
+      { key: 'defaultValue', label: 'Default Value', inputType: 'text' },
     ],
   },
 
@@ -95,6 +98,21 @@ const REGISTRY = {
       { key: 'id',    label: 'ID',    inputType: 'text', readonly: true },
       { key: 'label', label: 'Label', inputType: 'text', required: true },
       { key: 'value', label: 'Color', inputType: 'text', default: '#00d4ff' },
+    ],
+  },
+
+  pallet: {
+    Class:    ColorPalletControl,
+    label:    'Palette',
+    size:     { w: 48, h: 48 },
+    sizeOf:   (cfg) => {
+      const n = Array.isArray(cfg.colors) ? cfg.colors.length : 1;
+      return { w: 8 + n * 32 + (n - 1) * 8 + 8, h: 48 };
+    },
+    defaults: { colors: ['#FF0000'] },
+    schema: [
+      { key: 'id',    label: 'ID',    inputType: 'text' },
+      { key: 'label', label: 'Label', inputType: 'text', required: true },
     ],
   },
 
@@ -130,7 +148,7 @@ const REGISTRY = {
     size:     { w: 300, h: 40 },          // compact: half-height label strip
     defaults: { value: 0 },
     schema: [
-      { key: 'id',    label: 'ID',   inputType: 'text', readonly: true },
+      { key: 'id',    label: 'ID',   inputType: 'text' },
       { key: 'label', label: 'Text', inputType: 'text', required: true },
     ],
   },
@@ -140,6 +158,7 @@ export function getRegistry()       { return REGISTRY; }
 export function getTypes()          { return Object.keys(REGISTRY); }
 export function getEntry(type)      { return REGISTRY[type]; }
 export function getTypeLabel(type)  { return REGISTRY[type]?.label ?? type; }
+export function getSchema(type)     { return REGISTRY[type]?.schema ?? []; }
 
 export function createControl(config) {
   const entry = REGISTRY[config.type];

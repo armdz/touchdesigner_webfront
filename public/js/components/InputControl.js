@@ -9,6 +9,10 @@ export class InputControl extends BaseControl {
     super({ ...config, type: 'input' });
     this.placeholder = config.placeholder ?? 'Type here…';
     this.fieldType   = config.fieldType   ?? 'text';
+    this.defaultValue = config.defaultValue ?? null;
+    if (this.defaultValue !== null && this.defaultValue !== '') {
+      this.value = this.defaultValue;
+    }
   }
 
   render() {
@@ -45,6 +49,6 @@ export class InputControl extends BaseControl {
   }
 
   toJSON() {
-    return { ...super.toJSON(), placeholder: this.placeholder, fieldType: this.fieldType };
+    return { ...super.toJSON(), placeholder: this.placeholder, fieldType: this.fieldType, defaultValue: this.defaultValue };
   }
 }

@@ -1,0 +1,30 @@
+.color-pallet-control {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  padding: 8px !important;
+  gap: 8px;
+  overflow: hidden;
+  width: fit-content;
+  height: fit-content;
+  box-sizing: border-box;
+}
+
+.color-pallet__swatch {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 0;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.color-pallet__swatch:hover {
+  opacity: 0.85;
+}
+
+.color-pallet__swatch.active {
+  border-color: #00d4ff;
+}

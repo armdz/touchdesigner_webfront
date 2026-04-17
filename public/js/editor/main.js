@@ -31,6 +31,31 @@ params.onDelete = () => canvas.deleteSelected();
 
 sceneMgr.onSceneChange = (scene) => {
   canvas.load(scene.controls);
+};
+
+sceneMgr.onSceneSelect = (scene, idx) => {
+  const canDelete = sceneMgr.getScenes().length > 1;
+  params.showScene(scene, {
+    onRename: (name) => {
+      scene.name = name;
+      sceneMgr._render();
+      sceneMgr.onChange?.(sceneMgr.getScenes(), idx);
+    },
+    onClear: () => {
+      scene.controls = [];
+      canvas.load([]);
+      params.hide();
+      sceneMgr.onChange?.(sceneMgr.getScenes(), idx);
+    },
+    onDelete: canDelete ? () => {
+      sceneMgr._delete(idx);
+      params.hide();
+    } : null,
+  });
+};
+
+sceneMgr.onClearScene = () => {
+  canvas.load([]);
   params.hide();
 };
 

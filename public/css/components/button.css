@@ -19,8 +19,11 @@
   transition: background .1s, transform .05s;
 }
 
-.button-control__btn:hover  { background: #2a2a2a; }
-.button-control__btn:active { background: var(--accent); color: #000; transform: scale(.97); }
+.button-control__btn:hover:not(.button-control__btn--active) { background: #2a2a2a; }
+.button-control__btn:active:not(.button-control__btn--active) { background: var(--accent); color: #000; transform: scale(.97); }
+.button-control__btn--active { background: var(--accent); color: #000; }
+.button-control__btn--active:hover { background: var(--accent); opacity: .85; }
+.button-control__btn--active:active { transform: scale(.97); }
 
 .button-control__text {
   font-size: 13px;

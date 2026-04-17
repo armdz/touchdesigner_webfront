@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find . -name \"*.tmp.*\" -type f -delete)",
+      "Bash(rm -rf Backup)",
+      "Bash(rm -f Test.4.toe)",
+      "Read(//d/Users/HolaPlan/.claude/projects/d----LOLO---Dropbox-2026-TouchDesigner-WebServer/**)"
+    ],
+    "additionalDirectories": [
+      "d:\\__LOLO__\\Dropbox\\2026\\TouchDesigner\\WebServer\\public\\css\\components"
+    ]
+  }
+}

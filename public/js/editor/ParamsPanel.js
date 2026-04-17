@@ -27,6 +27,55 @@ export class ParamsPanel {
     this._renderEmpty();
   }
 
+  showScene(scene, { onRename, onClear, onDelete } = {}) {
+    this._fields.clear();
+    this._container.innerHTML = `
+      <p class="params__title">Scene</p>
+      <div class="params__fields" id="pFields"></div>
+      <div class="params__footer"></div>
+    `;
+    const fieldsEl = this._container.querySelector('#pFields');
+    const footer   = this._container.querySelector('.params__footer');
+
+    // Name
+    const nameRow = document.createElement('div');
+    nameRow.className = 'form__row';
+    const nameLabel = document.createElement('label');
+    nameLabel.className = 'form__label';
+    nameLabel.textContent = 'Nombre';
+    const nameInput = document.createElement('input');
+    nameInput.className = 'form__input';
+    nameInput.type  = 'text';
+    nameInput.value = scene.name;
+    nameInput.addEventListener('input', () => {
+      const v = nameInput.value.trim();
+      if (v) onRename?.(v);
+    });
+    nameRow.appendChild(nameLabel);
+    nameRow.appendChild(nameInput);
+    fieldsEl.appendChild(nameRow);
+
+    // Clear
+    const clearBtn = document.createElement('button');
+    clearBtn.className = 'btn btn--ghost btn--full btn--danger';
+    clearBtn.textContent = 'Borrar todos los controles';
+    clearBtn.addEventListener('click', () => {
+      if (!confirm(`¿Borrar todos los controles de "${scene.name}"?`)) return;
+      onClear?.();
+    });
+    footer.appendChild(clearBtn);
+
+    // Delete scene
+    if (onDelete) {
+      const delBtn = document.createElement('button');
+      delBtn.className = 'btn btn--ghost btn--full';
+      delBtn.style.marginTop = '6px';
+      delBtn.textContent = 'Eliminar escena';
+      delBtn.addEventListener('click', () => onDelete?.());
+      footer.appendChild(delBtn);
+    }
+  }
+
   /** Programmatically update a field display (e.g. after ID auto-adjust) */
   updateField(key, value) {
     const el = this._fields.get(key);
@@ -99,11 +148,9 @@ export class ParamsPanel {
 
           this.onChange?.(field.key, v);
 
-          // Auto-derive ID from label
           if (field.key === 'label') {
             const newId = labelToId(v);
             this.onChange?.('id', newId);
-            // Display will be updated via updateField() after collision check
           }
         });
       }
@@ -118,7 +165,64 @@ export class ParamsPanel {
       this._fields.set(field.key, inputEl);
     }
 
+    if (config.type === 'pallet') {
+      this._renderPalletColors(fieldsEl, config);
+    }
+
     this._container.querySelector('#btnDelete')
       .addEventListener('click', () => this.onDelete?.());
+  }
+
+  _renderPalletColors(container, config) {
+    const colors = Array.isArray(config.colors) ? [...config.colors] : ['#FF0000'];
+
+    const label = document.createElement('label');
+    label.className = 'form__label';
+    label.textContent = 'Colors';
+    container.appendChild(label);
+
+    const list = document.createElement('div');
+    list.style.cssText = 'display:flex; flex-direction:column; gap:6px; margin-top:4px;';
+
+    const emitColors = () => {
+      const pickers = list.querySelectorAll('input[type="color"]');
+      const updated = Array.from(pickers).map(p => p.value);
+      this.onChange?.('colors', updated);
+    };
+
+    const addRow = (color = '#FF0000') => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex; gap:6px; align-items:center;';
+
+      const picker = document.createElement('input');
+      picker.type = 'color';
+      picker.value = color;
+      picker.style.cssText = 'width:40px; height:32px; cursor:pointer; border:1px solid #555; flex-shrink:0;';
+      picker.addEventListener('input', emitColors);
+
+      const del = document.createElement('button');
+      del.textContent = '✕';
+      del.type = 'button';
+      del.style.cssText = 'padding:4px 10px; background:#444; color:#fff; border:none; cursor:pointer; font-size:12px;';
+      del.addEventListener('click', () => {
+        if (list.children.length > 1) { row.remove(); emitColors(); }
+      });
+
+      row.appendChild(picker);
+      row.appendChild(del);
+      list.appendChild(row);
+    };
+
+    colors.forEach(c => addRow(c));
+    container.appendChild(list);
+
+    const randHex = () => '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0');
+
+    const addBtn = document.createElement('button');
+    addBtn.textContent = '+ Color';
+    addBtn.type = 'button';
+    addBtn.style.cssText = 'margin-top:6px; padding:6px 12px; background:#444; color:#fff; border:none; cursor:pointer; font-size:12px;';
+    addBtn.addEventListener('click', () => { addRow(randHex()); emitColors(); });
+    container.appendChild(addBtn);
   }
 }

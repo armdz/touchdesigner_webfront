@@ -46,6 +46,7 @@ body {
 .btn--ghost:hover:not(:disabled) { color: var(--text); border-color: #444; }
 
 .btn--icon { padding: 3px 7px; font-size: 11px; }
+.btn--small { padding: 4px 10px; font-size: 12px; }
 .btn--full { width: 100%; }
 
 .btn--action {
