@@ -6,60 +6,28 @@
       "name": "Scene 1",
       "controls": [
         {
-          "type": "pallet",
-          "id": "palette",
-          "label": "Palette",
-          "x": 180,
-          "y": 120,
-          "colors": [
-            "#ff0000",
-            "#e0f1e4",
-            "#962999",
-            "#22c004",
-            "#e52cb7"
-          ]
-        },
-        {
           "type": "color",
           "id": "color",
           "label": "Color",
           "x": 20,
-          "y": 20,
+          "y": 40,
           "value": "#00d4ff",
           "alpha": 1
-        },
-        {
-          "type": "button",
-          "id": "button",
-          "label": "Button",
-          "x": 20,
-          "y": 120,
-          "value": 0
-        },
-        {
-          "type": "pallet",
-          "id": "palette_1",
-          "label": "Palette",
-          "x": 200,
-          "y": 320,
-          "colors": [
-            "#FF0000"
-          ]
         },
         {
           "type": "xypad",
           "id": "xy_pad",
           "label": "XY Pad",
-          "x": 200,
-          "y": 380,
+          "x": 20,
+          "y": 360,
           "value": "0.50 0.50"
         },
         {
           "type": "knob",
           "id": "knob",
           "label": "Knob",
-          "x": 380,
-          "y": 200,
+          "x": 220,
+          "y": 320,
           "min": 0,
           "max": 1,
           "step": 0.01,
@@ -67,40 +35,82 @@
         },
         {
           "type": "label",
-          "id": "label",
-          "label": "Label",
-          "x": 60,
-          "y": 760,
+          "id": "labelaaaaaaaaaaaaaaaaaaaaaa",
+          "label": "Labelaaaaaaaaaaaaaaaaaaaaaa",
+          "x": 20,
+          "y": 560,
           "value": 0
         },
         {
-          "type": "slider",
-          "id": "slider",
-          "label": "Slider",
-          "x": 60,
-          "y": 220,
-          "min": 0,
-          "max": 1,
-          "step": 0.01,
+          "type": "roundbutton",
+          "id": "hit",
+          "label": "Hit",
+          "x": 240,
+          "y": 140,
           "value": 0,
-          "orientation": "vertical"
+          "isToggle": "Toggle"
+        },
+        {
+          "type": "toggle",
+          "id": "ddd",
+          "label": "ddd",
+          "x": 120,
+          "y": 240,
+          "value": 0
+        },
+        {
+          "type": "roundbutton",
+          "id": "round_button",
+          "label": "Round Button",
+          "x": 160,
+          "y": 140,
+          "value": 0
+        },
+        {
+          "type": "button",
+          "id": "button",
+          "label": "Button",
+          "x": 20,
+          "y": 140,
+          "value": 0
+        },
+        {
+          "type": "toggle",
+          "id": "toggle",
+          "label": "Toggle",
+          "x": 20,
+          "y": 240,
+          "value": 0
+        },
+        {
+          "type": "toggle",
+          "id": "toggle_1",
+          "label": "Toggle",
+          "x": 220,
+          "y": 240,
+          "value": 0
+        },
+        {
+          "type": "input",
+          "id": "nombre",
+          "label": "Nombre",
+          "x": 20,
+          "y": 620,
+          "value": "",
+          "placeholder": "Type here\u2026",
+          "fieldType": "text",
+          "defaultValue": "Lolo"
+        },
+        {
+          "type": "colorwheel",
+          "id": "color_wheel",
+          "label": "Color Wheel",
+          "x": 340,
+          "y": 240,
+          "value": "#00d4ff"
         }
-      ]
-    },
-    {
-      "id": "scene_q9sbi8",
-      "name": "Scene 2",
-      "controls": []
-    },
-    {
-      "id": "scene_bmd613",
-      "name": "Scene 3",
-      "controls": []
-    },
-    {
-      "id": "scene_ype4up",
-      "name": "Scene 4",
-      "controls": []
+      ],
+      "color": "#00d4ff"
     }
   ]
 }

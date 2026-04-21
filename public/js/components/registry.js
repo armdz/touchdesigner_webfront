@@ -1,12 +1,14 @@
-import { SliderControl  } from './SliderControl.js';
-import { ButtonControl  } from './ButtonControl.js';
-import { InputControl   } from './InputControl.js';
-import { ToggleControl  } from './ToggleControl.js';
-import { ColorControl   } from './ColorControl.js';
-import { ColorPalletControl } from './ColorPalletControl.js';
-import { XYPadControl   } from './XYPadControl.js';
-import { KnobControl    } from './KnobControl.js';
-import { LabelControl   } from './LabelControl.js';
+import { SliderControl       } from './SliderControl.js';
+import { ButtonControl       } from './ButtonControl.js';
+import { RoundButtonControl  } from './RoundButtonControl.js';
+import { InputControl        } from './InputControl.js';
+import { ToggleControl       } from './ToggleControl.js';
+import { ColorControl        } from './ColorControl.js';
+import { ColorWheelControl   } from './ColorWheelControl.js';
+import { ColorPalletControl  } from './ColorPalletControl.js';
+import { XYPadControl        } from './XYPadControl.js';
+import { KnobControl         } from './KnobControl.js';
+import { LabelControl        } from './LabelControl.js';
 
 // ── Block grid system ─────────────────────────────────────────────────────
 // Cell:  140 × 80 px   (base unit)
@@ -52,12 +54,25 @@ const REGISTRY = {
   button: {
     Class:    ButtonControl,
     label:    'Button',
-    size:     { w: 140, h: 40 },           // 140 × 40
+    size:     sz(1, 1),
     defaults: { value: 0 },
     schema: [
       { key: 'id',       label: 'ID',       inputType: 'text' },
       { key: 'label',    label: 'Label',    inputType: 'text',   required: true },
       { key: 'text',     label: 'Text',     inputType: 'text',   default: 'Press' },
+      { key: 'isToggle', label: 'Behavior', inputType: 'select', options: ['Momentary', 'Toggle'], default: 'Momentary' },
+    ],
+  },
+
+  roundbutton: {
+    Class:    RoundButtonControl,
+    label:    'Round Button',
+    size:     SQ,
+    defaults: { value: 0 },
+    schema: [
+      { key: 'id',       label: 'ID',       inputType: 'text' },
+      { key: 'label',    label: 'Label',    inputType: 'text',   required: true },
+      { key: 'text',     label: 'Text',     inputType: 'text',   default: 'BTN' },
       { key: 'isToggle', label: 'Behavior', inputType: 'select', options: ['Momentary', 'Toggle'], default: 'Momentary' },
     ],
   },
@@ -101,13 +116,25 @@ const REGISTRY = {
     ],
   },
 
+  colorwheel: {
+    Class:    ColorWheelControl,
+    label:    'Color Wheel',
+    size:     sz(2, 2),                    // 300 × 180
+    defaults: { value: '#00d4ff' },
+    schema: [
+      { key: 'id',    label: 'ID',    inputType: 'text' },
+      { key: 'label', label: 'Label', inputType: 'text', required: true },
+      { key: 'value', label: 'Color', inputType: 'text', default: '#00d4ff' },
+    ],
+  },
+
   pallet: {
     Class:    ColorPalletControl,
     label:    'Palette',
-    size:     { w: 48, h: 48 },
+    size:     SQ,                          // 80 × 80 (1 color default)
     sizeOf:   (cfg) => {
       const n = Array.isArray(cfg.colors) ? cfg.colors.length : 1;
-      return { w: 8 + n * 32 + (n - 1) * 8 + 8, h: 48 };
+      return { w: 20 + 60 * n, h: 80 };   // n=1→80, n=2→140, n=3→200 (all ×20)
     },
     defaults: { colors: ['#FF0000'] },
     schema: [

@@ -12,6 +12,8 @@ export class Renderer {
     this._container.innerHTML = '';
     this._controls.clear();
 
+    this._container.style.setProperty('--accent', interfaceConfig.color ?? '#00d4ff');
+
     const controls = interfaceConfig.controls ?? [];
 
     if (controls.length === 0) {

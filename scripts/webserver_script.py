@@ -44,7 +44,7 @@ def _set_row(dat, row_id: str, value) -> None:
     dat.appendRow([row_id, value])
 
 def _get_controls(iface: dict, scene_id: str = None) -> list:
-    """Extract controls from a scene, or from legacy {controls:[]} format."""
+    """Extract controls from a specific scene, or from legacy {controls:[]} format."""
     scenes = iface.get('scenes', [])
     if scenes:
         if scene_id:
@@ -52,6 +52,16 @@ def _get_controls(iface: dict, scene_id: str = None) -> list:
         else:
             scene = scenes[0]
         return scene.get('controls', [])
+    return iface.get('controls', [])
+
+def _get_all_controls(iface: dict) -> list:
+    """Extract controls from every scene (used on start/save so all rows exist)."""
+    scenes = iface.get('scenes', [])
+    if scenes:
+        all_controls = []
+        for scene in scenes:
+            all_controls.extend(scene.get('controls', []))
+        return all_controls
     return iface.get('controls', [])
 
 def _hex_to_rgb(hex_str: str):
@@ -65,20 +75,26 @@ def _hex_to_rgb(hex_str: str):
 
 def _init_table_from_json(dat, scene_id: str = None) -> None:
     """
-    Populate dat table from interface.json for the given scene.
-    Called on server start, after /save, and on scene switch.
+    Populate dat table from interface.json.
+
+    - No scene_id (server start, /save): rebuild from ALL scenes so every row
+      exists from the start — TD links never break on scene switch.
+    - scene_id given (scene switch): upsert only, never clear, so rows from
+      other scenes remain intact.
 
     Multi-channel controls use channel suffixes:
       xypad  → {id}_x, {id}_y
       color  → {id}_r, {id}_g, {id}_b, {id}_a
     Label controls are decorative and produce no rows.
     """
-    dat.clear()
-    dat.appendRow(['id', 'value'])
+    if scene_id is None:
+        dat.clear()
+        dat.appendRow(['id', 'value'])
     try:
         with open(_interface_path(), 'r', encoding='utf-8') as f:
             iface = json.load(f)
-        for ctrl in _get_controls(iface, scene_id):
+        controls = _get_controls(iface, scene_id) if scene_id else _get_all_controls(iface)
+        for ctrl in controls:
             ctrl_id   = ctrl.get('id', '')
             ctrl_type = ctrl.get('type', '')
 
@@ -103,6 +119,14 @@ def _init_table_from_json(dat, scene_id: str = None) -> None:
                 _set_row(dat, ctrl_id + '_g', _control_values.get(ctrl_id + '_g', g))
                 _set_row(dat, ctrl_id + '_b', _control_values.get(ctrl_id + '_b', b))
                 _set_row(dat, ctrl_id + '_a', _control_values.get(ctrl_id + '_a', alpha))
+                continue
+
+            # Color Wheel → {id}_r, {id}_g, {id}_b (no alpha)
+            if ctrl_type == 'colorwheel':
+                r, g, b = _hex_to_rgb(ctrl.get('value', '#000000'))
+                _set_row(dat, ctrl_id + '_r', _control_values.get(ctrl_id + '_r', r))
+                _set_row(dat, ctrl_id + '_g', _control_values.get(ctrl_id + '_g', g))
+                _set_row(dat, ctrl_id + '_b', _control_values.get(ctrl_id + '_b', b))
                 continue
 
             # Pallet → {id}_r, {id}_g, {id}_b (first color as default)

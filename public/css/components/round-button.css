@@ -1,0 +1,69 @@
+.roundbtn-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0;
+}
+
+.roundbtn-control .control__id {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 8px;
+  font-family: var(--font);
+  color: var(--text-dim);
+  opacity: .35;
+  pointer-events: none;
+}
+
+.roundbtn-control__btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .1s, border-color .1s, box-shadow .1s, transform .05s;
+  flex-shrink: 0;
+}
+
+.roundbtn-control__btn:hover:not(.roundbtn-control__btn--active) {
+  border-color: #444;
+  background: #2a2a2a;
+}
+
+.roundbtn-control__btn:active:not(.roundbtn-control__btn--active) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent);
+  transform: scale(.95);
+}
+
+.roundbtn-control__btn--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.roundbtn-control__btn--active:hover { opacity: .85; }
+.roundbtn-control__btn--active:active { transform: scale(.95); }
+
+.roundbtn-control__text {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50px;
+  text-align: center;
+}

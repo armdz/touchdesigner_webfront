@@ -1,6 +1,6 @@
 .control {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
+  background: transparent;
+  border: none;
   border-radius: var(--radius);
   padding: 14px 16px;
   box-sizing: border-box;
@@ -17,6 +17,10 @@
 .control__label {
   font-size: 13px;
   flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .control__id {

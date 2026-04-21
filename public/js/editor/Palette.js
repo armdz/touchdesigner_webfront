@@ -8,6 +8,9 @@ const ICONS = {
   button: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <rect x="3" y="8" width="18" height="8" rx="2"/>
   </svg>`,
+  roundbutton: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="12" cy="12" r="8"/>
+  </svg>`,
   input: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <rect x="3" y="7" width="18" height="10" rx="2"/>
     <line x1="7" y1="12" x2="11" y2="12"/>
@@ -20,6 +23,14 @@ const ICONS = {
   color: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <circle cx="12" cy="12" r="9"/>
     <path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/>
+  </svg>`,
+  colorwheel: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="12" cy="12" r="9"/>
+    <circle cx="12" cy="12" r="3"/>
+    <line x1="12" y1="3" x2="12" y2="6" stroke-linecap="round"/>
+    <line x1="12" y1="18" x2="12" y2="21" stroke-linecap="round"/>
+    <line x1="3" y1="12" x2="6" y2="12" stroke-linecap="round"/>
+    <line x1="18" y1="12" x2="21" y2="12" stroke-linecap="round"/>
   </svg>`,
   colorPalette: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <rect x="3" y="3" width="18" height="18" rx="2"/>

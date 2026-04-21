@@ -51,7 +51,6 @@ export class SceneManager {
     if (this._scenes.length <= 1) return;
     this._scenes.splice(idx, 1);
     if (this._idx >= this._scenes.length) this._idx = this._scenes.length - 1;
-    this._closePanel();
     this._render();
     this.onSceneChange?.(this.getActive());
     this.onChange?.(this._scenes, this._idx);

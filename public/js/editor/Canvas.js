@@ -13,6 +13,8 @@ export class Canvas {
     this.onChange     = null;
     this.onIdAdjusted = null;
 
+    this._previewTimer = null;
+
     this._setupDrop();
     this._setupDeselect();
     this._setupDeleteKey();
@@ -56,7 +58,7 @@ export class Canvas {
       this._selected.el.style.height = `${h}px`;
     }
 
-    this._refreshPreview(this._selected);
+    this._refreshPreviewDebounced(this._selected);
     this.onChange?.(this._export());
   }
 
@@ -139,6 +141,12 @@ export class Canvas {
     preview.className = 'canvas-item__preview';
     el.appendChild(preview);
 
+    for (const pos of ['tl', 'tr', 'bl', 'br']) {
+      const corner = document.createElement('span');
+      corner.className = `canvas-item__corner canvas-item__corner--${pos}`;
+      el.appendChild(corner);
+    }
+
     item.el = el;
     this._refreshPreview(item);
 
@@ -147,6 +155,11 @@ export class Canvas {
 
     this._el.appendChild(el);
     return el;
+  }
+
+  _refreshPreviewDebounced(item) {
+    clearTimeout(this._previewTimer);
+    this._previewTimer = setTimeout(() => this._refreshPreview(item), 120);
   }
 
   _refreshPreview(item) {

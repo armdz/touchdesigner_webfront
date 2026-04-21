@@ -12,20 +12,65 @@
   <link rel="stylesheet" href="/css/components/toggle.css" />
   <link rel="stylesheet" href="/css/components/color.css" />
   <link rel="stylesheet" href="/css/components/color-pallet.css" />
+  <link rel="stylesheet" href="/css/components/colorwheel.css" />
   <link rel="stylesheet" href="/css/components/xypad.css" />
   <link rel="stylesheet" href="/css/components/knob.css" />
   <link rel="stylesheet" href="/css/components/vslider.css" />
   <link rel="stylesheet" href="/css/components/label.css" />
+  <link rel="stylesheet" href="/css/components/round-button.css" />
 </head>
 <body>
   <header class="header">
     <div class="header__left">
-      <span class="header__title">WebFront Editor</span>
+      <span class="header__title">WebFront</span>
       <span class="header__sep">|</span>
       <input class="header__project-name" id="projectName"
              value="Untitled Project" spellcheck="false"
              title="Click to rename project" />
+      <div class="header__project-actions">
+
+        <!-- New project -->
+        <button class="btn btn--ghost btn--icon-sq" id="btnNewProject" title="New project">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14">
+            <path d="M9 2H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6z"/>
+            <polyline points="9,2 9,6 13,6"/>
+            <line x1="6" y1="9" x2="10" y2="9"/>
+            <line x1="8" y1="7" x2="8" y2="11"/>
+          </svg>
+        </button>
+
+        <!-- Open / list projects -->
+        <button class="btn btn--ghost btn--icon-sq" id="btnOpenProject" title="Projects">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14">
+            <rect x="1" y="1" width="6" height="6" rx="1"/>
+            <rect x="9" y="1" width="6" height="6" rx="1"/>
+            <rect x="1" y="9" width="6" height="6" rx="1"/>
+            <rect x="9" y="9" width="6" height="6" rx="1"/>
+          </svg>
+        </button>
+
+        <!-- Duplicate project -->
+        <button class="btn btn--ghost btn--icon-sq" id="btnDupProject" title="Duplicate project">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14">
+            <rect x="5" y="5" width="8" height="9" rx="1"/>
+            <path d="M3 11V3a1 1 0 0 1 1-1h8"/>
+          </svg>
+        </button>
+
+        <!-- Delete project -->
+        <button class="btn btn--ghost btn--icon-sq" id="btnDelProject" title="Delete project">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14">
+            <polyline points="2,4 14,4"/>
+            <path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/>
+            <rect x="3" y="4" width="10" height="9" rx="1"/>
+            <line x1="6.5" y1="7" x2="6.5" y2="10"/>
+            <line x1="9.5" y1="7" x2="9.5" y2="10"/>
+          </svg>
+        </button>
+
+      </div>
     </div>
+
     <div class="header__actions">
 
       <div class="status" id="wsStatus" style="display:none">
@@ -35,27 +80,28 @@
 
       <span class="save-status" id="saveStatus"></span>
 
-      <!-- Preview: play icon -->
-      <button class="btn btn--action" id="btnPreview" title="Preview">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-          <polygon points="5,3 19,12 5,21"/>
+      <!-- Preview -->
+      <button class="btn btn--ghost btn--icon-sq" id="btnPreview" title="Preview">
+        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
+          <polygon points="4,2 13,8 4,14"/>
         </svg>
-        <span class="btn__text">Preview</span>
       </button>
 
-      <!-- Save: floppy disk icon -->
-      <button class="btn btn--primary btn--action" id="btnSave" title="Save to TouchDesigner">
+      <!-- Save to TouchDesigner -->
+      <button class="btn btn--primary btn--icon-sq" id="btnSave" title="Save to TouchDesigner">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
           <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
           <polyline points="17 21 17 13 7 13 7 21"/>
           <polyline points="7 3 7 8 15 8"/>
         </svg>
-        Save to TD
       </button>
 
     </div>
   </header>
+
+  <!-- Project picker dropdown -->
+  <div class="project-picker" id="projectPicker"></div>
 
   <div class="editor">
     <aside class="editor__palette" id="palette"></aside>

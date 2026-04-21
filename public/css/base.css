@@ -45,9 +45,16 @@ body {
 .btn--ghost { background: transparent; color: var(--text-dim); border-color: var(--border); }
 .btn--ghost:hover:not(:disabled) { color: var(--text); border-color: #444; }
 
-.btn--icon { padding: 3px 7px; font-size: 11px; }
-.btn--small { padding: 4px 10px; font-size: 12px; }
-.btn--full { width: 100%; }
+.btn--icon    { padding: 3px 7px; font-size: 11px; }
+.btn--icon-sq { padding: 0; width: 28px; height: 28px; flex-shrink: 0; }
+.btn--small   { padding: 4px 10px; font-size: 12px; }
+.btn--full    { width: 100%; }
+
+.btn--preview-active {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
 
 .btn--action {
   display: inline-flex;

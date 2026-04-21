@@ -180,17 +180,40 @@ body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 /* ── Canvas items ─────────────────────────────────────────── */
 .canvas-item {
   position: absolute;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-2);
+  background: transparent;
   cursor: move;
-  transition: border-color .1s, box-shadow .1s;
-  overflow: hidden;
 }
-.canvas-item:hover    { border-color: #3a3a3a; }
-.canvas-item.selected {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+
+/* Corner cross markers — hidden by default */
+.canvas-item__corner {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+.canvas-item__corner::before,
+.canvas-item__corner::after {
+  content: '';
+  position: absolute;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity .15s;
+}
+.canvas-item__corner::before { width: 10px; height: 1px; top: 0;  left: -5px; }
+.canvas-item__corner::after  { width: 1px; height: 10px; top: -5px; left: 0;  }
+.canvas-item__corner--tl { top:    0; left:  0; }
+.canvas-item__corner--tr { top:    0; right: 0; }
+.canvas-item__corner--bl { bottom: 0; left:  0; }
+.canvas-item__corner--br { bottom: 0; right: 0; }
+
+.canvas-item:hover .canvas-item__corner::before,
+.canvas-item:hover .canvas-item__corner::after  { opacity: .25; }
+
+.canvas-item.selected .canvas-item__corner::before,
+.canvas-item.selected .canvas-item__corner::after {
+  opacity: 1;
+  filter: drop-shadow(0 0 3px var(--accent));
 }
 
 .canvas-item__preview { width: 100%; height: 100%; pointer-events: none; }
@@ -198,11 +221,18 @@ body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
                                           display: flex; flex-direction: column; justify-content: center; }
 .canvas-item__preview .control__id      { display: none; }
 
-/* ── Project name (header) ────────────────────────────────── */
+/* ── Project name & actions (header) ─────────────────────── */
 .header__left {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.header__project-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 2px;
 }
 
 .header__sep {
@@ -325,4 +355,152 @@ body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 .color-picker-btns .btn {
   flex: 1;
   font-size: 12px;
+}
+
+/* ── Pallet color editor (ParamsPanel) ────────────────────── */
+.pallet-colors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.pallet-color-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.pallet-color-picker {
+  width: 40px;
+  height: 32px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  flex-shrink: 0;
+  background: none;
+  padding: 2px;
+}
+.pallet-color-picker:hover { border-color: #666; }
+
+.pallet-color-del {
+  padding: 4px 10px;
+  background: var(--bg-3);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 12px;
+  transition: color .15s, border-color .15s;
+}
+.pallet-color-del:hover { color: var(--error); border-color: var(--error); }
+
+.pallet-color-add {
+  margin-top: 6px;
+  padding: 6px 12px;
+  background: var(--bg-3);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 12px;
+  width: 100%;
+  transition: color .15s, border-color .15s;
+}
+.pallet-color-add:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ── Scene accent color row ───────────────────────────────── */
+.scene-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scene-color-input {
+  width: 40px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  padding: 2px;
+  background: none;
+  flex-shrink: 0;
+}
+.scene-color-input:hover { border-color: #444; }
+
+/* ── Project picker dropdown ──────────────────────────────── */
+.project-picker {
+  position: fixed;
+  z-index: 200;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-width: 200px;
+  max-width: 280px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  overflow: hidden;
+  display: none;
+}
+.project-picker.open { display: block; }
+
+.project-picker__header {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.project-picker__title {
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.project-picker__count {
+  font-size: 10px;
+  color: var(--text-dim);
+  background: var(--bg-2);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.project-picker__list {
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.project-picker__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background .1s;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.project-picker__item:hover           { background: var(--bg-2); color: var(--text); }
+.project-picker__item--active         { color: var(--text); }
+
+.project-picker__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.project-picker__item--active .project-picker__dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 5px var(--accent);
+}
+
+.project-picker__name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
 }

@@ -37,6 +37,9 @@
   text-align: center;
   width: 100%;
   line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .vslider-control__pad {

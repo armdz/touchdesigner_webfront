@@ -27,7 +27,7 @@ export class ParamsPanel {
     this._renderEmpty();
   }
 
-  showScene(scene, { onRename, onClear, onDelete } = {}) {
+  showScene(scene, { onRename, onClear, onDelete, onColorChange } = {}) {
     this._fields.clear();
     this._container.innerHTML = `
       <p class="params__title">Scene</p>
@@ -54,6 +54,33 @@ export class ParamsPanel {
     nameRow.appendChild(nameLabel);
     nameRow.appendChild(nameInput);
     fieldsEl.appendChild(nameRow);
+
+    // Accent color
+    const colorRow = document.createElement('div');
+    colorRow.className = 'form__row';
+    const colorLabel = document.createElement('label');
+    colorLabel.className = 'form__label';
+    colorLabel.textContent = 'Color de acento';
+    const colorWrap = document.createElement('div');
+    colorWrap.className = 'scene-color-row';
+    const colorInput = document.createElement('input');
+    colorInput.type  = 'color';
+    colorInput.value = scene.color ?? '#00d4ff';
+    colorInput.className = 'scene-color-input';
+    const colorReset = document.createElement('button');
+    colorReset.type = 'button';
+    colorReset.className = 'btn btn--ghost btn--small';
+    colorReset.textContent = 'Reset';
+    colorInput.addEventListener('input', () => onColorChange?.(colorInput.value));
+    colorReset.addEventListener('click', () => {
+      colorInput.value = '#00d4ff';
+      onColorChange?.('#00d4ff');
+    });
+    colorWrap.appendChild(colorInput);
+    colorWrap.appendChild(colorReset);
+    colorRow.appendChild(colorLabel);
+    colorRow.appendChild(colorWrap);
+    fieldsEl.appendChild(colorRow);
 
     // Clear
     const clearBtn = document.createElement('button');
@@ -182,28 +209,27 @@ export class ParamsPanel {
     container.appendChild(label);
 
     const list = document.createElement('div');
-    list.style.cssText = 'display:flex; flex-direction:column; gap:6px; margin-top:4px;';
+    list.className = 'pallet-colors-list';
 
     const emitColors = () => {
       const pickers = list.querySelectorAll('input[type="color"]');
-      const updated = Array.from(pickers).map(p => p.value);
-      this.onChange?.('colors', updated);
+      this.onChange?.('colors', Array.from(pickers).map(p => p.value));
     };
 
     const addRow = (color = '#FF0000') => {
       const row = document.createElement('div');
-      row.style.cssText = 'display:flex; gap:6px; align-items:center;';
+      row.className = 'pallet-color-row';
 
       const picker = document.createElement('input');
       picker.type = 'color';
       picker.value = color;
-      picker.style.cssText = 'width:40px; height:32px; cursor:pointer; border:1px solid #555; flex-shrink:0;';
+      picker.className = 'pallet-color-picker';
       picker.addEventListener('input', emitColors);
 
       const del = document.createElement('button');
       del.textContent = '✕';
       del.type = 'button';
-      del.style.cssText = 'padding:4px 10px; background:#444; color:#fff; border:none; cursor:pointer; font-size:12px;';
+      del.className = 'pallet-color-del';
       del.addEventListener('click', () => {
         if (list.children.length > 1) { row.remove(); emitColors(); }
       });
@@ -221,7 +247,7 @@ export class ParamsPanel {
     const addBtn = document.createElement('button');
     addBtn.textContent = '+ Color';
     addBtn.type = 'button';
-    addBtn.style.cssText = 'margin-top:6px; padding:6px 12px; background:#444; color:#fff; border:none; cursor:pointer; font-size:12px;';
+    addBtn.className = 'pallet-color-add';
     addBtn.addEventListener('click', () => { addRow(randHex()); emitColors(); });
     container.appendChild(addBtn);
   }
