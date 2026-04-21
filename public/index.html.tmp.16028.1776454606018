@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TD Interface</title>
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/viewer.css" />
+  <link rel="stylesheet" href="/css/components/slider.css" />
+  <link rel="stylesheet" href="/css/components/button.css" />
+  <link rel="stylesheet" href="/css/components/input.css" />
+  <link rel="stylesheet" href="/css/components/toggle.css" />
+  <link rel="stylesheet" href="/css/components/color.css" />
+  <link rel="stylesheet" href="/css/components/color-palette.css" />
+  <link rel="stylesheet" href="/css/components/xypad.css" />
+  <link rel="stylesheet" href="/css/components/knob.css" />
+  <link rel="stylesheet" href="/css/components/vslider.css" />
+  <link rel="stylesheet" href="/css/components/label.css" />
+</head>
+<body>
+  <header class="header">
+    <span class="header__title" id="projectName">Untitled Project</span>
+    <div class="status__dot status__dot--connecting" id="statusDot"></div>
+  </header>
+
+  <div class="scene-nav" id="sceneNav" style="display:none"></div>
+
+  <main class="viewer-canvas" id="controls"></main>
+
+  <script type="module" src="/js/viewer/main.js"></script>
+</body>
+</html>
